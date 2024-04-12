@@ -7,9 +7,8 @@ function get_api_data($ip, $path, $username, $password) {
 
   # Create curl object
   $ch = curl_init();
-  $timeout = 5;
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 
   # Get most recent telegram
   curl_setopt($ch, CURLOPT_URL, "http://".$ip.$path);
@@ -20,9 +19,9 @@ function get_api_data($ip, $path, $username, $password) {
   $lines = explode("\n", $data);
   $matches = [];
   foreach( $lines as $line ) {
-    preg_match('/^var (.*) = \"(.*)\";$/', $line, $var, PREG_OFFSET_CAPTURE);
+    preg_match('/^var (.*) = \"(.*)\";.*$/', $line, $var);
     if ( count($var) > 0 ) {
-      $matches[$var[1][0]] = trim($var[2][0]);
+      $matches[$var[1]] = trim($var[2]);
     }
   }
 
