@@ -1,7 +1,7 @@
 <?php
 
 header('Content-Type: text/plain; version=0.0.4; charset=utf-8');
-$powersocket_ips = ["192.168.100.142"];
+$powersocket_ips = ["192.168.100.142","192.168.100.113"];
 
 function get_api_data($ip, $path) {
 
