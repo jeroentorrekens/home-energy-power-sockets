@@ -74,12 +74,7 @@ function parse_as_info($line, $values) {
                         # Only 1 data field for this code
                         echo "# HELP ".$values[$code]["name"]." ".$code." ".$values[$code]["help"]."\n";
                         echo "# TYPE ".$values[$code]["name"]." ".$values[$code]["type"]."\n";
-                        if ( $values[$code]["type"] == "gauge" || $values[$code]["type"] == "counter" ) {
-                                echo $values[$code]["name"]." ".floatval($matches[3][0]*$values[$code]["multiplication"])."\n";
-                        } else {
-                                echo $values[$code]["name"]." ".floatval($matches[3][0])."\n";
-
-                        }
+                        echo $values[$code]["name"]." ".floatval($matches[3][0])."\n";
                 }
         }
 }
@@ -88,12 +83,18 @@ function parse_as_data($line, $values) {
         preg_match('/([0-9]*-[0-9]*):([0-9]*\.[0-9]*\.[0-9]*)\(([0-9.]*)/', $line, $matches, PREG_OFFSET_CAPTURE);
         if ( count($matches) > 1 ) {
                 $code = $matches[2][0];
-                        if ( $code == "1.6.0" ) {
-                                return;
-                        }
+                if ( $code == "1.6.0" ) {
+                        return;
+                }
                 echo "# HELP ".$values[$code]["name"]." ".$code." ".$values[$code]["help"]."\n";
                 echo "# TYPE ".$values[$code]["name"]." ".$values[$code]["type"]."\n";
-                echo $values[$code]["name"]." ".floatval($matches[3][0])."\n";
+                #echo $values[$code]["name"]." ".floatval($matches[3][0])."\n";
+                if ( $values[$code]["type"] == "gauge" || $values[$code]["type"] == "counter" ) {
+                        echo $values[$code]["name"]." ".floatval($matches[3][0])*$values[$code]["multiplication"]."\n";
+                } else {
+                        echo $values[$code]["name"]." ".floatval($matches[3][0])."\n";
+                }
+
         }
 }
 
